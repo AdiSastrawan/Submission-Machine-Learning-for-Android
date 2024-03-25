@@ -110,13 +110,9 @@ class MainActivity : AppCompatActivity() {
     private val launchGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ){ uri ->
-        val storageDir = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"CropImage")
-
-        val destinationUri = File.createTempFile("${System.currentTimeMillis()}",".jpg",storageDir).toUri()
 
         if(uri != null){
-            UCrop.of(uri, destinationUri)
+            UCrop.of(uri, uri)
                 .withAspectRatio(1f, 1f)
                 .withMaxResultSize(2000, 2000)
                 .start(this);
@@ -129,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = UCrop.getOutput(data!!)
+            showToast(resultUri.toString())
             currentImageUri = resultUri
             showImage()
         } else if (resultCode == UCrop.RESULT_ERROR) {
