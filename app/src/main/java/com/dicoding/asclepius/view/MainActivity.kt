@@ -1,11 +1,8 @@
 package com.dicoding.asclepius.view
 
-import android.Manifest
 import android.content.Intent
-import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -15,7 +12,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.dicoding.asclepius.R
 import com.dicoding.asclepius.databinding.ActivityMainBinding
@@ -23,7 +19,6 @@ import com.dicoding.asclepius.helper.ImageClassifierHelper
 import com.yalantis.ucrop.UCrop
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import java.io.File
-import java.io.IOException
 import java.text.NumberFormat
 
 
@@ -115,8 +110,13 @@ class MainActivity : AppCompatActivity() {
     private val launchGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ){ uri ->
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"CropImage")
+
+        val destinationUri = File.createTempFile("${System.currentTimeMillis()}",".jpg",storageDir).toUri()
+
         if(uri != null){
-            UCrop.of(uri, uri)
+            UCrop.of(uri, destinationUri)
                 .withAspectRatio(1f, 1f)
                 .withMaxResultSize(2000, 2000)
                 .start(this);
