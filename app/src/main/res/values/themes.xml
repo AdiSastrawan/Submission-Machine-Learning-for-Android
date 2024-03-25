@@ -2,7 +2,14 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Asclepius" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorSecondary">@color/secondary_light</item>
+        <item name="colorAccent">@color/accent_light</item>
+        <item name="colorContainer">@color/container_color_light</item>
+        <item name="android:colorBackground">@color/bg_light</item>
+        <item name="textFillColor">@color/text_color_light</item>
+        <item name="colorOnPrimary">@color/text_color_light</item>
+        <item name="colorOnBackground">@color/text_color_light</item>
     </style>
 
     <style name="Theme.Asclepius" parent="Base.Theme.Asclepius" />
