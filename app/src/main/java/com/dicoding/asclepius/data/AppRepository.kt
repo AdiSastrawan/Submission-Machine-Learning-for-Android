@@ -1,4 +1,4 @@
-package com.dicoding.asclepius.data
+package com.dicoding.asclepius.data.local
 
 import android.app.Application
 import androidx.lifecycle.LiveData

@@ -10,6 +10,6 @@ import androidx.room.Query
 interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(historyEntity: HistoryEntity)
-    @Query("select * from history")
+    @Query("select * from history ORDER BY id DESC")
     fun getAllUser() : LiveData<List<HistoryEntity>>
 }
