@@ -13,9 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import com.dicoding.asclepius.R
+import com.dicoding.asclepius.data.HistoryEntity
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
+import com.dicoding.asclepius.helper.ViewModelFactory
 import com.yalantis.ucrop.UCrop
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import java.io.File
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var currentImageUri: Uri? = null
 
     private var imageClassifierHelper : ImageClassifierHelper? = null
+    private lateinit var viewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +40,13 @@ class MainActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
         }
-
+        val factory = ViewModelFactory.getInstance(application)
+        viewModel = ViewModelProvider(this,factory).get(MainViewModel::class.java)
         binding.galleryButton.setOnClickListener{
             startGallery()
+        }
+        binding.historyButton.setOnClickListener{
+            moveToHistory()
         }
         binding.analyzeButton.setOnClickListener{
             currentImageUri?.let {
@@ -48,6 +56,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    private fun moveToHistory() {
+        val intent = Intent(this,HistoryActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startGallery() {
@@ -82,6 +95,13 @@ class MainActivity : AppCompatActivity() {
                                         "${it.label} " + NumberFormat.getPercentInstance()
                                             .format(it.score).trim()
                                     }
+                                val history = HistoryEntity(
+                                    image = currentImageUri.toString(),
+                                    result = sortedCategories[0].label.toString(),
+                                    score = NumberFormat.getPercentInstance()
+                                        .format(sortedCategories[0].score).trim()
+                                )
+                                viewModel.insert(history)
                                 moveToResult(displayResult)
                             }
                         }

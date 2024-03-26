@@ -7,4 +7,5 @@
     <string name="result">Hasil Analisis</string>
     <string name="image_classifier_failed">Image classifier failed to initialize. See error logs for details</string>
     <string name="empty_image_warning">Please Select an Image</string>
+    <string name="history">History</string>
 </resources>
