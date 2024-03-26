@@ -1,9 +1,8 @@
-package com.dicoding.asclepius.data
+package com.dicoding.asclepius.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 @Entity(tableName="history")
 data class HistoryEntity (

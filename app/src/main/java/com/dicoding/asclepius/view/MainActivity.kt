@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -12,16 +11,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.asclepius.R
-import com.dicoding.asclepius.data.HistoryEntity
+import com.dicoding.asclepius.data.local.HistoryEntity
 import com.dicoding.asclepius.databinding.ActivityMainBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
 import com.dicoding.asclepius.helper.ViewModelFactory
 import com.yalantis.ucrop.UCrop
 import org.tensorflow.lite.task.vision.classifier.Classifications
-import java.io.File
 import java.text.NumberFormat
 
 
@@ -37,11 +34,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.title = "Home"
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
         }
         val factory = ViewModelFactory.getInstance(application)
-        viewModel = ViewModelProvider(this,factory).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this,factory)[MainViewModel::class.java]
         binding.galleryButton.setOnClickListener{
             startGallery()
         }
@@ -56,6 +54,9 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        binding.newsButton.setOnClickListener{
+            moveToNews()
+        }
     }
 
     private fun moveToHistory() {
@@ -63,7 +64,12 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun moveToNews(){
+        val intent = Intent(this,NewsActivity::class.java)
+        startActivity(intent)
+    }
     private fun startGallery() {
+
         launchGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
@@ -129,13 +135,13 @@ class MainActivity : AppCompatActivity() {
 
     private val launchGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
-    ){ uri ->
-
+    ){
+        uri ->
         if(uri != null){
+
             UCrop.of(uri, uri)
-                .withAspectRatio(1f, 1f)
                 .withMaxResultSize(2000, 2000)
-                .start(this);
+                .start(this)
         }else{
             Log.d("Photo Picker", "No media selected")
         }

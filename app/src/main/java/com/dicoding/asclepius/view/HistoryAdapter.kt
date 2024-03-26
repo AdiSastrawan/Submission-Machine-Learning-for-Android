@@ -6,7 +6,7 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.asclepius.data.HistoryEntity
+import com.dicoding.asclepius.data.local.HistoryEntity
 import com.dicoding.asclepius.databinding.ItemHistoryRowBinding
 
 class HistoryAdapter : ListAdapter<HistoryEntity,HistoryAdapter.ViewHolder>(DIFF_CALLBACK) {
