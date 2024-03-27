@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity() {
                         result?.let {it ->
                             if(it.isNotEmpty() && it[0].categories.isNotEmpty() ){
                                 println(it)
-//                                Log.d("Cancer",it.toString())
                                 val sortedCategories = it[0].categories.sortedByDescending { it.score }
                                 binding.progressIndicator.visibility = View.GONE
                                 val displayResult =

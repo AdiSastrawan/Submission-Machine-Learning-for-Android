@@ -28,7 +28,7 @@ class ViewModelFactory private constructor(private val application: Application)
         } else if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(application) as T
         } else if(modelClass.isAssignableFrom(NewsViewModel::class.java)){
-            return  NewsViewModel() as T
+            return  NewsViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }

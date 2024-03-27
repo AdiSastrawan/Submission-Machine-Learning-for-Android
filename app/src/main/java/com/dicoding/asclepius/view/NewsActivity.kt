@@ -18,9 +18,18 @@ class NewsActivity : AppCompatActivity() {
         supportActionBar?.title = "News"
         val factory = ViewModelFactory.getInstance(this.application)
         val viewModel = ViewModelProvider(this,factory)[NewsViewModel::class.java]
-
         val adapter = NewsAdapter()
+        with(binding){
+            searchView.setupWithSearchBar(searchBar)
+            searchView.editText.setOnEditorActionListener{ _,_,_ ->
+                searchBar.setText(searchView.text)
+                searchView.hide()
+                viewModel.getNews(searchView.text.toString())
+                false
+            }
+        }
         viewModel.articlesItem.observe(this){
+            binding.tvExist.visibility = if(it.isNotEmpty()) View.GONE else View.VISIBLE
             adapter.submitList(it)
         }
         binding.rvNews.layoutManager = LinearLayoutManager(this)

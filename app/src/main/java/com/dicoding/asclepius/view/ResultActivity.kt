@@ -16,7 +16,6 @@ class ResultActivity : AppCompatActivity() {
         val result = intent.getStringExtra(EXTRA_RESULT)
         binding.resultImage.setImageURI(imageUri)
         binding.resultText.text = result
-
     }
 
     companion object{
